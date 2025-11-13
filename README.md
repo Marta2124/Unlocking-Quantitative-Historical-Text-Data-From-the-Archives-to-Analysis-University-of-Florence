@@ -1,5 +1,4 @@
-# Unlocking-Quantitative-Historical-Text-Data-From-the-Archives-to-Analysis-University-of-Florence
-
+# Workshop: ‘Unlocking Quantitative Historical Text Data: From the Archives to Analysis’, Marta Pagnini (19, 20, 21 November 2025)
 
 This workshop introduces social science researchers to the collection, processing, and analysis of historical text data. Over three sessions, each lasting 3 hours, participants will gain both conceptual foundations and hands-on experience in R and Python (no prior coding required). Each session combines 90 minutes of lecture with 90 minutes of guided practice in R and Python, ensuring participants leave with reproducible scripts and workflows.
 Drawing on my own research experience, I will guide students through the entire process - from raw data to analysis. 
