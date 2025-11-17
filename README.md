@@ -11,4 +11,4 @@ I constructed a longitudinal database based on entries from the Court Circular, 
 By the end of the workshop, participants will be equipped with both methodological insights and practical tools for applying historical text analysis in their own social science research.
 Practical information
 
-Sessions will take place on 19 November (15:00 – 18:00), 20 November (10:00 – 13:00), 21 November (10:00 - 13:00). A laptop is required. It is recommended to install beforehand both R here, R studio here, and Pycharm here.
+Sessions will take place on 19 November (16:00 – 19:00), 20 November (10:00 – 13:00), 21 November (10:00 - 13:00). A laptop is required. It is recommended to install beforehand both R here, R studio here, and Pycharm here.
