@@ -1,0 +1,146 @@
+---
+title: "regular_expressions_court_circular"
+output: html_document
+date: "2025-11-14"
+---
+
+```{r Loading the Dataset, include=FALSE}
+
+# You can find a list of regular expressions that you can use in R here https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html
+
+cc_1870_1920 = read.csv("/Users/martapagnini/Library/CloudStorage/Dropbox/Marta 30_10_2024/Teaching/Workshop_Florence_11_25/Github/Session_2//Activity_2_Extracting_Names_of_Individuals_using_Regex/sample_court_circular_1870_1920.csv")
+
+```
+
+```{r Extracting Single Capitalized Words, include=FALSE}
+library(stringr)
+
+
+text <- cc_1870_1920$text[1]
+
+# Extract all capitalized words
+capital_words <- str_extract_all(string = text, pattern = "[A-Z][a-z]+")[[1]]
+
+
+# [A-Z] → matches a single uppercase letter (A-Z)
+# [a-z]+ → matches one or more lowercase letters following the uppercase
+# This captures single capitalized words like "Dean", "Windsor"
+
+# View results
+print(capital_words)
+
+
+```
+
+```{r Extracting Numbers, include=FALSE}
+
+
+
+year <- str_extract(string = cc_1870_1920$date[1], "^\\d\\d\\d\\d")
+
+month  = str_extract(string = cc_1870_1920$date[1], "-\\d\\d-")
+
+month = gsub(pattern = "-", "", month)
+
+month = gsub(pattern = "12", "December", month)
+
+# try to get the day, knowing that to capture parts of text at the end of the sentence, you would need to use the pattern of your choice followed by the symbol $, and do a bit of data cleaning if necessary
+
+  
+library(dplyr)
+
+
+
+
+
+```
+
+```{r Using dplyr to extract the year for the entire database, include=FALSE}
+
+cc_1870_1920 <- cc_1870_1920 %>%
+  mutate(Year = str_extract(date, "^\\d\\d\\d\\d"))
+```
+
+
+```{r Capturing a Sequence of Capitalized Words, include=FALSE}
+
+capital_words_seq <- str_extract_all(
+  text,
+  "\\b(?:[A-Z][a-z]*\\b(?:\\s+|$))+"
+)[[1]]
+
+
+# \b → word boundary, ensures we start at the beginning of a word
+# (?: ...) → non-capturing group
+# + → one or more occurrences
+
+# Clean up extra spaces
+capital_words_seq <- str_trim(capital_words_seq)
+
+print(capital_words_seq)
+
+
+```
+
+
+```{r Capturing Names with of between Capitalized Words, include=FALSE}
+capital_words_seq <- str_extract_all(
+  text,
+  "\\b(?:[A-Z][a-z]*)(?:\\s+(?:of|if|[A-Z][a-z]*))*"
+)[[1]]
+
+
+#?|if|[A-Z][a-z]*) → allows 'of' or 'if' between capitalized words
+# This captures sequences like "Dean of Windsor" or "Lord John"
+
+# Remove single letters or spurious matches if needed
+capital_words_seq <- capital_words_seq[nchar(capital_words_seq) > 1]
+
+# Trim spaces
+capital_words_seq <- str_trim(capital_words_seq)
+
+print(capital_words_seq)
+
+
+```
+
+
+
+```{r Apply function to entire dataset, include=FALSE}
+
+library(stringr)
+library(dplyr)
+
+# Define a function for your regex extraction
+extract_people_regex <- function(text) {
+  capital_words_seq <- str_extract_all(
+    text,
+    "\\b(?:[A-Z][a-z]*)(?:\\s+(?:of|if|[A-Z][a-z]*))*"
+  )[[1]]
+  
+  # Remove very short matches (optional)
+  capital_words_seq <- capital_words_seq[nchar(capital_words_seq) > 1]
+  
+  # Trim extra spaces
+  capital_words_seq <- str_trim(capital_words_seq)
+  
+  # Join entities with |
+  paste(capital_words_seq, collapse = " | ")
+}
+
+# Apply to all rows
+cc_1870_1920 <- cc_1870_1920 %>%
+  mutate(people_regex = sapply(text, extract_people_regex))
+
+
+# change the text between "" and write your working directory
+
+write.csv(cc_1870_1920,"/Users/martapagnini/Library/CloudStorage/Dropbox/Marta 30_10_2024/Teaching/Workshop_Florence_11_25/Github/Session_2/Activity_2_Extracting_Names_of_Individuals_using_Regex/output/cc_1870_1920_with_regex.csv")
+
+
+write.csv(cc_1870_1920,"/Users/martapagnini/Library/CloudStorage/Dropbox/Marta 30_10_2024/Teaching/Workshop_Florence_11_25/Github/Session_2/Activity_3_Using_Existing_Spacy_Model/cc_1870_1920_with_regex.csv") # let's save it to activity 3, as we will need it for that too!
+
+
+# what do you notice about what we managed to extract from the Court Circular? 
+```
+
