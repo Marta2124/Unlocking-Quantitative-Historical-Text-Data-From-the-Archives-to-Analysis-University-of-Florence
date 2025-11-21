@@ -1,0 +1,14 @@
+{
+  "labels":[
+    "royal_household",
+    "royals",
+    "aristocracy",
+    "public_officials",
+    "clergy",
+    "military",
+    "untitled",
+    "other"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}
